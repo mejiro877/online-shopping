@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ユーザメニュー</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <header class="flex p-6 items-center justify-between">
+      <h1 class="text-4xl">オンラインショッピング</h1>
+      <div class="mr-16">「ゲスト」さん</div>
+    </header>
+    <hr />
+    <div class="container w-1/2 mx-auto mt-24">
+      <div class="w-3/4 mx-auto">
+        <div class="flex justify-between mt-6">
+          <a href="register_user">新規会員登録</a>
+          <span>会員情報の登録を行います。</span>
+        </div>
+        <div class="flex justify-between">
+          <a href="edit">会員情報変更・削除</a>
+          <span>会員情報の変更、削除を行います。</span>
+        </div>
+        <div class="flex justify-between">
+          <a href="order_start">商品検索</a>
+          <span>購入する商品の検索を行います。</span>
+        </div>
+        <div class="flex justify-between">
+          <a href="cart_list">お買い物かご</a>
+          <span>商品の注文を行います。</span>
+        </div>
+        <br />
+      </div>
+      <div class="text-center">
+        <button
+          type="button"
+          class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-full border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+        >
+          ログイン
+        </button>
+        <!--        <input-->
+        <!--          type="button"-->
+        <!--          name="login"-->
+        <!--          value="ログイン"-->
+        <!--          onclick="location.href='login'"-->
+        <!--        />-->
+      </div>
+    </div>
+  </body>
+</html>

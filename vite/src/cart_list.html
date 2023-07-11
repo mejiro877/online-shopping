@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>お買い物かご</title>
+    <link rel="stylesheet" href="main.css" />
+    <script type="text/javascript">
+      // action動的変更
+      function goShopping() {
+        document.getElementById("addProductForm").action = "shopping_check";
+      }
+    </script>
+  </head>
+  <body>
+    <header class="flex p-6 items-center justify-between">
+      <h1 class="text-4xl">オンラインショッピング</h1>
+      <div class="mr-16">「ゲスト」さん</div>
+    </header>
+    <hr />
+    <div class="container w-1/2 mx-auto">
+      <!--    <div class="container w-1/2 mx-auto">-->
+      <!--      <header class="flex pt-4 items-center justify-between">-->
+      <!--        <h1 class="text-4xl">オンラインショッピング</h1>-->
+      <!--        <div>「ゲスト」さん</div>-->
+      <!--      </header>-->
+      <!--    </div>-->
+      <!--    <hr />-->
+      <!--    &lt;!&ndash; 注文内訳 &ndash;&gt;-->
+      <!--    <h3>●商品一覧</h3>-->
+      <!--<form action="cart_list" method="POST" id="addProductForm">-->
+      <!--  <table border="1">-->
+      <!--    <tr>-->
+      <!--      <th>選択</th>-->
+      <!--      <th>商品コード</th>-->
+      <!--      <th>商品名</th>-->
+      <!--      <th>販売元</th>-->
+      <!--      <th>価格</th>-->
+      <!--      <th>購入数</th>-->
+      <!--    </tr>-->
+      <!--    <th:block th:each="product : ${session.selectProductMap}">-->
+      <!--      <tr>-->
+      <!--        <td><input type="checkbox" name="selectProductCode" value="${product.key}"></td>-->
+      <!--        <td>[[${product.key}]]</td>-->
+      <!--        <td>[[${product.value.productName}]]</td>-->
+      <!--        <td>[[${product.value.maker}]]</td>-->
+      <!--        <td align="right">[[${product.value.unitPrice}]]</td>-->
+      <!--        <td><input type="text" th:name="${product.key}" th:value="${product.value.productCnt}"></td>-->
+      <!--      </tr>-->
+      <!--    </th:block>-->
+      <!--    &lt;!&ndash;				<c:forEach var="product" items="${selectProductMap}" varStatus="st">&ndash;&gt;-->
+      <!--    &lt;!&ndash;					<tr>&ndash;&gt;-->
+      <!--    &lt;!&ndash;						<td><input type="checkbox" name="selectProductCode" value="${product.key}"></td>&ndash;&gt;-->
+      <!--    &lt;!&ndash;						<td><c:out value="${product.key}" /></td>&ndash;&gt;-->
+      <!--    &lt;!&ndash;						<td><c:out value="${product.value.productName}" /></td>&ndash;&gt;-->
+      <!--    &lt;!&ndash;						<td><c:out value="${product.value.maker}" /></td>&ndash;&gt;-->
+      <!--    &lt;!&ndash;						<td align="right">\<fmt:formatNumber value="${product.value.unitPrice}" /></td>&ndash;&gt;-->
+      <!--    &lt;!&ndash;						<td><input type="text" name="${product.key}" value="${product.value.productCnt}"></td>&ndash;&gt;-->
+      <!--    &lt;!&ndash;					</tr>&ndash;&gt;-->
+      <!--    &lt;!&ndash;				</c:forEach>&ndash;&gt;-->
+      <!--  </table>-->
+      <!--  <br>-->
+      <!--  <th:block th:if="${session.selectProductMap != null}">-->
+      <!--    <input type="submit" name="remove" value="取り消し">-->
+      <!--    <input type="submit" name="delete" value="買い物をやめる">-->
+      <!--    <input type="submit" name="order" value="注文する" onclick="goShopping();">-->
+      <!--  </th:block>-->
+      <!--  <input type="button" value="メニューへ" onclick="location.href='menu'">-->
+      <!--  <span id="choiseErrMesse" class="error">[[${error}]]</span>-->
+      <table
+        class="w-full border-collapse bg-white text-left text-sm text-gray-500"
+      >
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+              選択
+            </th>
+            <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+              商品コード
+            </th>
+            <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+              商品名
+            </th>
+            <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+              State
+            </th>
+            <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+          <tr>
+            <th class="px-6 py-4 font-medium text-gray-900">Helen Howard</th>
+            <td class="px-6 py-4">Nov.4 2022</td>
+            <td class="px-6 py-4">helen@sailboatui.com</td>
+            <td class="px-6 py-4">
+              <span
+                class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  class="h-3 w-3"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Paid
+              </span>
+            </td>
+            <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+              <a href="">Delete</a><a href="" class="text-primary-700">Edit</a>
+            </td>
+          </tr>
+          <tr>
+            <th class="px-6 py-4 font-medium text-gray-900">Helen Howard</th>
+            <td class="px-6 py-4">Nov.4 2022</td>
+            <td class="px-6 py-4">helen@sailboatui.com</td>
+            <td class="px-6 py-4">
+              <span
+                class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  class="h-3 w-3"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Paid
+              </span>
+            </td>
+            <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+              <a href="">Delete</a><a href="" class="text-primary-700">Edit</a>
+            </td>
+          </tr>
+          <tr>
+            <th class="px-6 py-4 font-medium text-gray-900">Helen Howard</th>
+            <td class="px-6 py-4">Nov.4 2022</td>
+            <td class="px-6 py-4">helen@sailboatui.com</td>
+            <td class="px-6 py-4">
+              <span
+                class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  class="h-3 w-3"
+                >
+                  <path
+                    d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+                  />
+                </svg>
+                Canceled
+              </span>
+            </td>
+            <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+              <a href="">Delete</a><a href="" class="text-primary-700">Edit</a>
+            </td>
+          </tr>
+          <tr>
+            <th class="px-6 py-4 font-medium text-gray-900">Helen Howard</th>
+            <td class="px-6 py-4">Nov.4 2022</td>
+            <td class="px-6 py-4">helen@sailboatui.com</td>
+            <td class="px-6 py-4">
+              <span
+                class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  class="h-3 w-3"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Paid
+              </span>
+            </td>
+            <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+              <a href="">Delete</a><a href="" class="text-primary-700">Edit</a>
+            </td>
+          </tr>
+          <tr>
+            <th class="px-6 py-4 font-medium text-gray-900">Helen Howard</th>
+            <td class="px-6 py-4">Nov.4 2022</td>
+            <td class="px-6 py-4">helen@sailboatui.com</td>
+            <td class="px-6 py-4">
+              <span
+                class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  class="h-3 w-3"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Paid
+              </span>
+            </td>
+            <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+              <a href="">Delete</a><a href="" class="text-primary-700">Edit</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!--</form>-->
+  </body>
+</html>

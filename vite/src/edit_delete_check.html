@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="main.css" />
+    <title>会員情報削除確認</title>
+    <script type="text/javascript">
+      // 2度打ち対策
+      function disabledSubmit() {
+        var element = document.getElementById("registerUserBtn");
+        element.disabled = true;
+      }
+    </script>
+  </head>
+  <body>
+    <header class="flex p-6 items-center justify-between">
+      <h1 class="text-4xl">オンラインショッピング</h1>
+      <div class="mr-16">「ゲスト」さん</div>
+    </header>
+    <hr />
+    <div class="container w-1/2 mx-auto mt-24">
+      <form action="edit_delete_end" method="POST" th:object="${editFormModel}">
+        この情報を削除しますか？<br />
+        <br />
+        ●会員情報<br />
+        <br />
+        <table border="1">
+          <tr>
+            <th><label for="memno">会員NO</label></th>
+            <td th:text="*{memberNo}">
+              <input
+                type="hidden"
+                th:field="*{memberNo}"
+                name="memberNo"
+                id="memno"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th><label for="name">氏名</label></th>
+            <td th:text="*{name}">
+              <input type="hidden" th:field="*{name}" name="name" />
+              <input
+                type="hidden"
+                th:field="*{password}"
+                name="password"
+                id="name"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th><label for="age">年齢</label></th>
+            <td th:text="*{age}">
+              <input type="hidden" th:field="*{age}" name="age" id="age" />
+            </td>
+          </tr>
+          <tr>
+            <th><label for="sex">性別</label></th>
+            <td>
+              <c:if test="${editFormModel.sex == 'm'}">男性</c:if>
+              <c:if test="${editFormModel.sex == 'f'}">女性</c:if>
+              <input type="hidden" th:field="*{sex}" name="sex" id="sex" />
+            </td>
+          </tr>
+          <tr>
+            <th><label for="zip">郵便番号</label></th>
+            <td th:text="*{zip}">
+              <input type="hidden" th:field="*{zip}" name="zip" id="zip" />
+            </td>
+          </tr>
+          <tr>
+            <th><label for="address">住所</label></th>
+            <td th:text="*{address}">
+              <input
+                type="hidden"
+                th:field="*{address}"
+                name="address"
+                id="address"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th><label for="tel">電話番号</label></th>
+            <td th:text="*{tel}">
+              <input type="hidden" th:field="*{tel}" name="tel" id="tel" />
+            </td>
+          </tr>
+          <tr>
+            <th><label for="regdate">登録日</label></th>
+            <td>
+              [[*{registerDate}]]
+              <!--					<fmt:formatDate th:field="*{registerDate}" pattern="yyyy/MM/dd" />-->
+              <input
+                type="hidden"
+                th:field="*{registerDate}"
+                name="registerDate"
+                id="regdate"
+              />
+            </td>
+          </tr>
+        </table>
+        <br />
+        <div class="flex gap-12 justify-start mt-4">
+          <button
+            id="registerUserBtn"
+            type="submit"
+            class="rounded-lg border border-primary-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300"
+          >
+            実行
+          </button>
+          <input
+            type="button"
+            value="戻る"
+            onclick="history.back()"
+            class="rounded-lg border border-primary-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300"
+          />
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

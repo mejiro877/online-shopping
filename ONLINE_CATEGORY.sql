@@ -1,0 +1,3 @@
+INSERT INTO ecsitedb.ONLINE_CATEGORY (CTGR_ID, NAME, LAST_UPD_DATE)
+VALUES (1, 'test', '2021-09-20 00:00:00'),
+       (2, 'test2', '2023-05-01 00:00:00');

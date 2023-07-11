@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="input.css"/>
+  <script type="text/javascript" src="Validate.js">
+    function clearFormAll() {
+      for (var i = 0; i < document.forms.length; ++i) {
+        clearForm(document.forms[i]);
+      }
+    }
+
+    function clearForm(form) {
+      for (var i = 0; i < form.elements.length; ++i) {
+        clearElement(form.elements[i]);
+      }
+    }
+
+    function clearElement(element) {
+      switch (element.type) {
+        case "hidden":
+        case "submit":
+        case "reset":
+        case "button":
+        case "image":
+          return;
+        case "file":
+          return;
+        case "text":
+        case "password":
+        case "textarea":
+          element.value = "";
+          return;
+        case "checkbox":
+        case "radio":
+          element.checked = false;
+          return;
+        case "select-one":
+        case "select-multiple":
+          element.selectedIndex = 0;
+          return;
+        default:
+      }
+    }
+  </script>
+  <style>
+      .error {
+          color: #ff0000;
+      }
+  </style>
+  <title>商品検索</title>
+
+  <style>
+      table td#memo {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 21em;
+          max-width: 21em;
+      }
+  </style>
+
+</head>
+<body>
+<header class="flex p-6 items-center justify-between">
+  <h1 class="text-4xl">オンラインショッピング</h1>
+  <div class="mr-16">「ゲスト」さん</div>
+</header>
+<hr/>
+<div class="container w-1/2 mx-auto mt-24">
+  <label>検索条件を入力して下さい。</label>
+  <br>
+  <br>
+  <!-- 注文者検索フォーム -->
+  <form action="search_product" method="POST" id="searchForm" th:object="${searchProductModel}">
+    <table border="1">
+      <tr>
+        <th>カテゴリ</th>
+        <td>
+          <select name="categoryId">
+            <option value="">全て</option>
+            <!--  ControllerからcategoryListを受け取る -->
+            <th:block th:each="category : ${categoryList}">
+              <th:blocK th:if="${category.ctgrId == searchProductModel.categoryId}">
+                <option th:value="${category.ctgrId}" selected>[[${category.ctgrId}]]</option>
+              </th:blocK>
+              <th:blocK th:if="${category.ctgrId != searchProductModel.categoryId}">
+                <option th:value="${category.ctgrId}">[[${category.ctgrId}]]</option>
+              </th:blocK>
+            </th:block>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>商品名</th>
+        <td><input type="text" name="productName" th:field="*{productName}"/></td>
+      </tr>
+      <tr>
+        <th>販売元</th>
+        <td><input type="text" name="maker" th:field="*{maker}"/></td>
+      </tr>
+      <tr>
+        <th>金額上限</th>
+        <td>
+          <input type="text" name="unitPriceMax" th:field="*{unitPriceMax}"/>
+          <span class="check" th:errors="*{unitPriceMax}"></span>
+          <form:errors cssClass="check" path="searchProductModel.unitPriceMax"/>
+          <form:errors cssClass="check" path="searchProductModel.checkMax"/>
+        </td>
+      </tr>
+      <tr>
+        <th>金額下限</th>
+        <td>
+          <input type="text" name="unitPriceMin" th:field="*{unitPriceMin}"/>
+          <span class="check" th:errors="*{unitPriceMin}"></span>
+          <form:errors cssClass="check" path="searchProductModel.unitPriceMin"/>
+        </td>
+      </tr>
+    </table>
+    <br>
+    <input type="submit" value="検索">
+    <input type="button" value="戻る" onclick="location.href='menu'">
+    <input type="button" value="クリア" onclick="clearFormAll();">
+  </form>
+
+  <!-- 注文者検索結果/選択フォーム -->
+  <h3>●商品一覧</h3>
+  <!-- ページング -->
+  <th:block th:if="${totalPage != null}">
+    <a href="search_product?pageCnt=1">≪</a>
+    <a th:href="|search_product?pageCnt=${pageCnt - 1}|">≺</a>
+    [[${pageCnt}]] / [[${totalPage}]] ページ
+    <a th:href="|search_product?pageCnt=${pageCnt + 1}|">></a>
+    <a th:href="|search_product?pageCnt=${totalPage}|">≫</a>
+  </th:block>
+  <form action="select_product" method="POST" id="choiseForm">
+    <table border="1">
+      <tr>
+        <th>選択</th>
+        <th>商品コード</th>
+        <th>商品名</th>
+        <th>販売元</th>
+        <th>金額(単価)</th>
+        <th>メモ</th>
+        <th>購入数</th>
+      </tr>
+      <!--  ControllerからviewPageを受け取る -->
+      <th:block th:each="product : ${viewPage}">
+        <tr>
+          <td><input type="checkbox" name="selectProductCode" th:value="${product.productCode}"></td>
+          <td>[[${product.productCode}]]</td>
+          <td><a th:href="|product_detail?productCode=${product.productCode}|">[[${product.productName}]]</a></td>
+          <td>[[${product.maker}]]</td>
+          <!--						<td align="right">\<fmt:formatNumber value="${product.unitPrice}" /></td>-->
+          <!--						<%&#45;&#45; 					<td><c:out value="${product.unitPrice}" /></td> &#45;&#45;%>-->
+          <td align="right">[[${product.unitPrice}]]</td>
+          <td id="memo">[[${product.memo}]]</td>
+          <td><input type="text" th:name="${product.productCode}" th:value="${product.productCnt}"></td>
+        </tr>
+      </th:block>
+    </table>
+    <br>
+    <th:block th:if="${totalPage != null}">
+      <input type="submit" value="お買い物かごに入れる">
+    </th:block>
+    <th:block th:if="${totalPage == null}">
+      <label>条件に該当する商品は0件です。</label>
+    </th:block>
+    <span id="choiseErrMesse" class="error">[[${error}]]</span>
+
+    <div class="">
+      <table
+              class="w-full border-collapse border border-gray-200 bg-white text-left text-sm text-gray-500"
+      >
+        <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+            選択
+          </th>
+          <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+            商品コード
+          </th>
+          <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+            商品名
+          </th>
+          <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+            販売元
+          </th>
+          <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+            金額（単価）
+          </th>
+          <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+            メモ
+          </th>
+          <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+            購入数
+          </th>
+        </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+        <tr>
+          <th class="px-6 py-4 font-medium text-gray-900">Helen Howard</th>
+          <td class="px-6 py-4">Nov.4 2022</td>
+          <td class="px-6 py-4">Nov.4 2022</td>
+          <td class="px-6 py-4">Nov.4 2022</td>
+          <td class="px-6 py-4">helen@sailboatui.com</td>
+          <td class="px-6 py-4">
+                <span
+                        class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+                >
+                  <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          class="h-3 w-3"
+                  >
+                    <path
+                            fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"
+                    />
+                  </svg>
+                  Paid
+                </span>
+          </td>
+          <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+            <a href="">Delete</a
+            ><a href="" class="text-primary-700">Edit</a>
+          </td>
+        </tr>
+        <tr>
+          <th class="px-6 py-4 font-medium text-gray-900">Helen Howard</th>
+          <td class="px-6 py-4">Nov.4 2022</td>
+          <td class="px-6 py-4">helen@sailboatui.com</td>
+          <td class="px-6 py-4">
+                <span
+                        class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+                >
+                  <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          class="h-3 w-3"
+                  >
+                    <path
+                            fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"
+                    />
+                  </svg>
+                  Paid
+                </span>
+          </td>
+          <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+            <a href="">Delete</a
+            ><a href="" class="text-primary-700">Edit</a>
+          </td>
+        </tr>
+        <tr>
+          <th class="px-6 py-4 font-medium text-gray-900">Helen Howard</th>
+          <td class="px-6 py-4">Nov.4 2022</td>
+          <td class="px-6 py-4">helen@sailboatui.com</td>
+          <td class="px-6 py-4">
+                <span
+                        class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600"
+                >
+                  <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          class="h-3 w-3"
+                  >
+                    <path
+                            d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+                    />
+                  </svg>
+                  Canceled
+                </span>
+          </td>
+          <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+            <a href="">Delete</a
+            ><a href="" class="text-primary-700">Edit</a>
+          </td>
+        </tr>
+        <tr>
+          <th class="px-6 py-4 font-medium text-gray-900">Helen Howard</th>
+          <td class="px-6 py-4">Nov.4 2022</td>
+          <td class="px-6 py-4">helen@sailboatui.com</td>
+          <td class="px-6 py-4">
+                <span
+                        class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+                >
+                  <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          class="h-3 w-3"
+                  >
+                    <path
+                            fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"
+                    />
+                  </svg>
+                  Paid
+                </span>
+          </td>
+          <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+            <a href="">Delete</a
+            ><a href="" class="text-primary-700">Edit</a>
+          </td>
+        </tr>
+        <tr>
+          <th class="px-6 py-4 font-medium text-gray-900">Helen Howard</th>
+          <td class="px-6 py-4">Nov.4 2022</td>
+          <td class="px-6 py-4">helen@sailboatui.com</td>
+          <td class="px-6 py-4">
+                <span
+                        class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+                >
+                  <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          class="h-3 w-3"
+                  >
+                    <path
+                            fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"
+                    />
+                  </svg>
+                  Paid
+                </span>
+          </td>
+          <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+            <a href="">Delete</a
+            ><a href="" class="text-primary-700">Edit</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <title>商品登録結果</title>
+  </head>
+  <body>
+  <th:block th:insert="~{layout/_Header :: pageHeader}"></th:block>
+  <hr/>
+  <div class="mx-auto max-w-xl">
+    <h2
+            class="pt-[0] px-[.4em] pb-[.2em] [border-bottom:3px_solid_#2589d0] bg-[#ffffff] text-[#333333] text-2xl font-bold"
+    >
+      商品一覧
+    </h2>
+        <table
+          class="w-full border-collapse border border-gray-200 bg-white text-left text-sm text-gray-500"
+        >
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+                商品コード
+              </th>
+              <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+                商品名
+              </th>
+              <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+                販売元
+              </th>
+              <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+                価格
+              </th>
+              <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+                購入数
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+              <th:block th:each="product : ${session.selectProductMap}">
+                <tr>
+                  <td class="px-6 py-4">[[${product.key}]]</td>
+                  <td class="px-6 py-4">[[${product.value.productName}]]</td>
+                  <td class="px-6 py-4">[[${product.value.maker}]]</td>
+                  <td class="px-6 py-4">[[${product.value.unitPrice}]]</td>
+                  <td class="px-6 py-4">[[${product.value.productCnt}]]</td>
+                </tr>
+              </th:block>
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <div class="flex gap-12 justify-center mt-4">
+        <input
+          type="button"
+          value="お買いものかご"
+          onclick="location.href='cart_list'"
+          class="rounded-lg border border-primary-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300"
+        />
+        <input
+          type="button"
+          value="戻る"
+          onclick="history.back()"
+          class="rounded-lg border border-primary-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300"
+        />
+      </div>
+    </div>
+  </body>
+</html>

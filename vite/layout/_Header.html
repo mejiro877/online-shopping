@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<%-- header --%>
+<header th:fragment="pageHeader">
+	<script type="text/javascript">
+	function clearFormAll() {
+	    for (var i=0; i<document.forms.length; ++i) {
+	        clearForm(document.forms[i]);
+	    }
+	}
+	function clearForm(form) {
+	    for(var i=0; i<form.elements.length; ++i) {
+	        clearElement(form.elements[i]);
+	    }
+	}
+	function clearElement(element) {
+	    switch(element.type) {
+	        case "hidden":
+	        case "submit":
+	        case "reset":
+	        case "button":
+	        case "image":
+	            return;
+	        case "file":
+	            return;
+	        case "text":
+	        case "password":
+	        case "textarea":
+	            element.value = "";
+	            return;
+	        case "checkbox":
+	        case "radio":
+	            element.checked = false;
+	            return;
+	        case "select-one":
+	        case "select-multiple":
+	            element.selectedIndex = 0;
+	            return;
+	        default:
+	    }
+	}
+
+	document.write("オンラインショッピングサイト<br>");
+	var Now = new Date();
+	var NowYear = Now.getFullYear();
+	var NowMon = Now.getMonth() + 1;
+	var NowDay = Now.getDate();
+	var NowHour = Now.getHours();
+	var NowMin = Now.getMinutes();
+
+	if(NowMon < 10){
+		NowMon = "0"+NowMon;
+	}
+	if(NowDay < 10){
+		NowDay = "0"+NowDay;
+	}
+	if(NowHour < 10){
+		NowHour = "0"+NowHour;
+	}
+	if(NowMin < 10){
+		NowMin = "0"+NowMin;
+	}
+	document.write(NowYear+"/"+NowMon+"/"+NowDay+" "+NowHour+":"+NowMin);
+	</script>
+	<div>
+		<th:block th:if="${session['userId'] == null}">
+		「ゲスト」さん
+		</th:block>
+		<th:block th:if="${session['userId'] != null}">
+		「
+			[[${session.editFormModel.name}]]
+		」さん
+		</th:block>
+	</div>
+</header>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <title>会員情報修正</title>
+    <script type="text/javascript">
+      // 2度打ち対策
+      function disabledSubmit() {
+        var element = document.getElementById("registerUserBtn");
+        element.disabled = true;
+      }
+    </script>
+  </head>
+  <body>
+    <th:block th:insert="~{layout/_Header :: pageHeader}"></th:block>
+    <hr />
+    <div class="mx-auto max-w-xl">
+      <div class="my-4">会員情報を入力して下さい。</div>
+      <h2
+        class="pt-[0] px-[.4em] pb-[.2em] [border-bottom:3px_solid_#2589d0] bg-[#ffffff] text-[#333333] text-2xl font-bold"
+      >
+        会員情報
+      </h2>
+      <form
+        action="edit_check"
+        method="POST"
+        th:object="${editFormModel}"
+        class="space-y-5 mt-6"
+      >
+        <input type="hidden" name="password" th:value="*{password}" />
+        <input type="hidden" name="registerDate" th:value="*{registerDate}" />
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="memno"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >会員NO</label
+          >
+          <div class="col-span-2">
+            <span
+              th:text="*{memberNo}"
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"/>
+            </span>
+            <input type="hidden" th:value="*{memberNo}" name="memberNo" id="memno" />
+            <span class="text-red-600" th:errors="*{memberNo}"></span>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="name"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >氏名</label
+          >
+          <div class="col-span-2">
+            <input
+              type="text"
+              name="name"
+              th:field="*{name}"
+              id="name"
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
+            />
+            <span class="text-red-600" th:errors="*{name}"></span>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="newpass"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >パスワード</label
+          >
+          <div class="col-span-2">
+            <input
+              type="password"
+              name="newPassword"
+              id="newpass"
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
+              placeholder="Password"
+            />
+            <span class="text-red-600" th:errors="*{newPassword}"></span>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="passchk"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >パスワード（確認用）</label
+          >
+          <div class="col-span-2">
+            <input
+              type="password"
+              name="confNewPassword"
+              id="passchk"
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
+            />
+            <span class="text-red-600" th:errors="*{confNewPassword}"></span>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="age"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >年齢</label
+          >
+          <div class="col-span-2">
+            <input
+              type="text"
+              name="age"
+              th:field="*{age}"
+              id="age"
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
+            />
+            <span class="text-red-600" th:errors="*{age}"></span>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="sex"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >性別</label
+          >
+          <div class="col-span-2">
+            <select
+              name="sex"
+              id="sex"
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50"
+            >
+              <option value="m" selected>男性</option>
+              <option value="f">女性</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="zip"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >郵便番号</label
+          >
+          <div class="col-span-2">
+            <input
+              type="text"
+              name="zip"
+              th:field="*{zip}"
+              id="zip"
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
+            />
+            <span class="text-red-600" th:errors="*{zip}"></span>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="address"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >住所</label
+          >
+          <div class="col-span-2">
+            <textarea
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50"
+              rows="3"
+              cols="50"
+              name="address"
+              id="address"
+              th:field="*{address}"
+            ></textarea>
+            <span class="text-red-600" th:errors="*{address}"></span>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="tel"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >電話番号</label
+          >
+          <div class="col-span-2">
+            <input
+              type="text"
+              name="tel"
+              th:field="*{tel}"
+              id="tel"
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
+            />
+            <span class="text-red-600" th:errors="*{tel}"></span>
+          </div>
+        </div>
+        <div class="flex gap-12 justify-center mt-6">
+          <input
+            type="submit"
+            value="確認"
+            class="rounded-lg border border-primary-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300"
+          />
+          <input
+            type="button"
+            value="戻る"
+            onclick="location.href='menu'"
+            class="rounded-lg border border-primary-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300"
+          />
+          <input
+            type="button"
+            value="クリア"
+            onClick="clearFormAll();"
+            class="rounded-lg border border-primary-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300"
+          />
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

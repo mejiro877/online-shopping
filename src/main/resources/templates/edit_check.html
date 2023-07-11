@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <title>会員情報修正確認</title>
+    <script type="text/javascript">
+      // 2度打ち対策
+      function disabledSubmit() {
+        var element = document.getElementById("registerUserBtn");
+        element.disabled = true;
+      }
+    </script>
+  </head>
+  <body>
+    <th:block th:insert="~{layout/_Header :: pageHeader}"></th:block>
+    <hr />
+    <div class="mx-auto max-w-xl">
+      <div class="my-4">この内容に変更しますか？</div>
+      <h2
+        class="pt-[0] px-[.4em] pb-[.2em] [border-bottom:3px_solid_#2589d0] bg-[#ffffff] text-[#333333] text-2xl font-bold"
+      >
+        会員情報
+      </h2>
+      <form
+        action="edit_end"
+        method="POST"
+        th:object="${editFormModel}"
+        class="space-y-5 mt-6"
+      >
+        <input type="hidden" th:field="*{newPassword}" name="newPassword" />
+        <input type="hidden" th:field="*{nowPassword}" name="password" /> <br />
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="memno"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >会員NO</label
+          >
+          <div class="col-span-2">
+            <span th:text="*{memberNo}" />
+            <input
+              type="hidden"
+              th:field="*{memberNo}"
+              name="memno"
+              id="memno"
+            />
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="name"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >氏名</label
+          >
+          <div class="col-span-2">
+            <span th:text="*{name}" />
+            <input type="hidden" th:field="*{name}" name="name" id="name" />
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="age"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >年齢</label
+          >
+          <div class="col-span-2">
+            <span th:text="*{age}" />
+            <input type="hidden" th:field="*{age}" name="age" id="age" />
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="sex"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >性別</label
+          >
+          <div class="col-span-2">
+            <th:block th:if="*{sex == 'm'}">
+              <span>男性</span>
+            </th:block>
+            <th:block th:if="*{sex == 'f'}">
+              <span>女性</span>
+            </th:block>
+            <input type="hidden" th:field="*{sex}" name="sex" id="sex" />
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="zip"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >郵便番号</label
+          >
+          <div class="col-span-2">
+            <span th:text="*{zip}" />
+            <input type="hidden" th:field="*{zip}" name="zip" id="zip" />
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="address"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >住所</label
+          >
+          <div class="col-span-2">
+            <span th:text="*{address}" />
+            <input
+              type="hidden"
+              th:field="*{address}"
+              name="address"
+              id="address"
+            />
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="tel"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >電話番号</label
+          >
+          <div class="col-span-2">
+            <span th:text="*{tel}" />
+            <input type="hidden" th:field="*{tel}" name="tel" id="tel" />
+          </div>
+        </div>
+        <div class="grid grid-cols-3 items-center">
+          <label
+            for="registerDate"
+            class="col-span-1 block text-sm font-medium text-gray-700"
+            >登録日</label
+          >
+          <div class="col-span-2">
+            <span th:text="*{registerDate}" />
+            <input
+              type="hidden"
+              th:field="*{registerDate}"
+              name="registerDate"
+              id="registerDate"
+            />
+          </div>
+        </div>
+        <div class="flex gap-12 justify-center mt-6">
+          <input
+            type="submit"
+            id="registerUserBtn"
+            value="実行"
+            class="rounded-lg border border-primary-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300"
+          />
+          <input
+            type="button"
+            value="戻る"
+            onclick="location.href='edit'"
+            class="rounded-lg border border-primary-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300"
+          />
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,105 @@
+-- ecsitedb.ONLINE_CATEGORY definition
+
+CREATE TABLE `ONLINE_CATEGORY`
+(
+    `CTGR_ID`       int(11)     NOT NULL,
+    `NAME`          varchar(20) NOT NULL,
+    `LAST_UPD_DATE` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`CTGR_ID`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+
+-- ecsitedb.ONLINE_MEMBER definition
+
+CREATE TABLE `ONLINE_MEMBER`
+(
+    `MEMBER_NO`     int(11)     NOT NULL,
+    `PASSWORD`      varchar(8)  NOT NULL,
+    `NAME`          varchar(20) NOT NULL,
+    `AGE`           int(11)     NOT NULL,
+    `SEX`           char(1)     NOT NULL,
+    `ZIP`           varchar(8)  NOT NULL,
+    `ADDRESS`       varchar(50) NOT NULL,
+    `TEL`           varchar(20) NOT NULL,
+    `REGISTER_DATE` date        NOT NULL,
+    `DELETE_FLG`    char(1)     NOT NULL DEFAULT '0',
+    `LAST_UPD_DATE` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`MEMBER_NO`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+
+-- ecsitedb.ONLINE_STAFF definition
+
+CREATE TABLE `ONLINE_STAFF`
+(
+    `STAFF_NO`      int(11)     NOT NULL,
+    `PASSWORD`      varchar(8)  NOT NULL,
+    `NAME`          varchar(20) NOT NULL,
+    `AGE`           int(11)     NOT NULL,
+    `SEX`           char(1)     NOT NULL,
+    `REGISTER_DATE` date        NOT NULL,
+    `LAST_UPD_DATE` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`STAFF_NO`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+
+-- ecsitedb.ONLINE_ORDER definition
+
+CREATE TABLE `ONLINE_ORDER`
+(
+    `ORDER_NO`      int(11)     NOT NULL AUTO_INCREMENT,
+    `MEMBER_NO`     int(11)     NOT NULL,
+    `TOTAL_MONEY`   bigint(20)  NOT NULL,
+    `TOTAL_TAX`     bigint(20)  NOT NULL,
+    `ORDER_DATE`    date        NOT NULL,
+    `COLLECT_NO`    varchar(16) NOT NULL,
+    `LAST_UPD_DATE` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`ORDER_NO`),
+    UNIQUE KEY `COLLECT_NO` (`COLLECT_NO`),
+    KEY `MEMBER_NO` (`MEMBER_NO`),
+    CONSTRAINT `ONLINE_ORDER_ibfk_1` FOREIGN KEY (`MEMBER_NO`) REFERENCES `ONLINE_MEMBER` (`MEMBER_NO`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 6
+  DEFAULT CHARSET = utf8;
+
+
+-- ecsitedb.ONLINE_PRODUCT definition
+
+CREATE TABLE `ONLINE_PRODUCT`
+(
+    `PRODUCT_CODE`  varchar(14) NOT NULL,
+    `CATEGORY_ID`   int(11)     NOT NULL,
+    `PRODUCT_NAME`  varchar(50) NOT NULL,
+    `MAKER`         varchar(20) NOT NULL,
+    `STOCK_COUNT`   int(11)     NOT NULL,
+    `REGISTER_DATE` date        NOT NULL,
+    `UNIT_PRICE`    bigint(20)  NOT NULL,
+    `PICTURE_NAME`  varchar(100)         DEFAULT NULL,
+    `MEMO`          varchar(255)         DEFAULT NULL,
+    `DELETE_FLG`    char(1)     NOT NULL DEFAULT '0',
+    `LAST_UPD_DATE` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`PRODUCT_CODE`),
+    KEY `CATEGORY_ID` (`CATEGORY_ID`),
+    CONSTRAINT `ONLINE_PRODUCT_ibfk_1` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `ONLINE_CATEGORY` (`CTGR_ID`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+
+-- ecsitedb.ONLINE_ORDER_LIST definition
+
+CREATE TABLE `ONLINE_ORDER_LIST`
+(
+    `LIST_NO`      int(11)     NOT NULL AUTO_INCREMENT,
+    `COLLECT_NO`   varchar(16) NOT NULL,
+    `PRODUCT_CODE` varchar(14) NOT NULL,
+    `ORDER_COUNT`  int(11)     NOT NULL,
+    `ORDER_PRICE`  bigint(20)  NOT NULL,
+    PRIMARY KEY (`LIST_NO`),
+    KEY `PRODUCT_CODE` (`PRODUCT_CODE`),
+    CONSTRAINT `ONLINE_ORDER_LIST_ibfk_1` FOREIGN KEY (`PRODUCT_CODE`) REFERENCES `ONLINE_PRODUCT` (`PRODUCT_CODE`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 6
+  DEFAULT CHARSET = utf8;

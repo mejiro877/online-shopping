@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<%-- header --%>
+<header class="flex p-6 items-center justify-between" th:fragment="pageHeader">
+  <h1 class="text-4xl">オンラインショッピング</h1>
+  <div class="mr-16">
+    <th:block th:if="${session['userId'] == null}">
+      「ゲスト」さん
+    </th:block>
+    <th:block th:if="${session['userId'] != null}">
+      「 [[${session.editFormModel.name}]] 」さん
+    </th:block>
+  </div>
+</header>
