@@ -1,5 +1,8 @@
 -- ecsitedb.ONLINE_CATEGORY definition
 
+CREATE DATABASE ecsitedb;
+use ecsitedb;
+
 CREATE TABLE `ONLINE_CATEGORY`
 (
     `CTGR_ID`       int(11)     NOT NULL,

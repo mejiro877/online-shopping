@@ -1,0 +1,14 @@
+services:
+  db:
+    image: mysql:8
+    command: --collation-server=utf8mb4_0900_bin
+      --transaction-isolation=READ-COMMITTED
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_HOST: '%'
+      TZ: Asia/Tokyo
+    ports:
+      - 13306:3306
+    volumes:
+      - ./initdb:/docker-entry-point-initdb.d
